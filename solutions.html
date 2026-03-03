@@ -1,0 +1,333 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnostico de PC</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #64748b;
+      --primary: #0b6bcb;
+      --border: #dbe3ee;
+      --ok-bg: #ecfeff;
+      --ok-border: #a5f3fc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 0% 0%, #dbeafe 0, transparent 40%), var(--bg);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 8px 22px rgba(2, 8, 23, 0.06);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.7rem;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      cursor: pointer;
+      transition: border-color 120ms, background-color 120ms;
+    }
+
+    .option:hover {
+      border-color: var(--primary);
+      background: #f8fbff;
+    }
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    button {
+      margin-top: 10px;
+      width: fit-content;
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: var(--primary);
+      cursor: pointer;
+    }
+
+    button:hover { filter: brightness(1.05); }
+
+    #result {
+      display: none;
+      border: 1px solid var(--ok-border);
+      background: var(--ok-bg);
+    }
+
+    #result h2 {
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+    }
+
+    ol {
+      margin: 0;
+      padding-left: 20px;
+      line-height: 1.45;
+    }
+
+    .muted {
+      color: var(--muted);
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+    footer {
+      max-width: 900px;
+      margin: 18px auto 0;
+      padding: 22px 20px;
+      border-radius: 16px;
+      border: 1px solid #0a4e95;
+      background: linear-gradient(135deg, #0a5ab0, #083b73);
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(2, 8, 23, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .footer-copy h2 {
+      margin: 0;
+      font-size: 1.55rem;
+      line-height: 1.15;
+      letter-spacing: 0.3px;
+      color: #fff;
+    }
+
+    .footer-copy p {
+      margin-top: 6px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.98rem;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .footer-links a {
+      min-width: 170px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #ffffff;
+      color: #0a3f79;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+
+    .footer-links a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+    }
+
+    .footer-links img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      display: block;
+    }
+    @media (max-width: 640px) {
+      body { padding: 14px; }
+      .card { padding: 14px; }
+      h1 { font-size: 1.35rem; }
+      footer {
+        padding: 14px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .footer-copy h2 {
+        font-size: 1.25rem;
+      }
+      .footer-links {
+        justify-content: stretch;
+      }
+      .footer-links a {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="card">
+      <h1>Diagnostico de PC</h1>
+      <p>Selecciona el problema principal y el sistema te mostrara pasos de Soluci&oacute;n.</p>
+
+      <form id="diagnosticForm">
+        <label class="option">
+          <input type="radio" name="issue" value="no_power" required />
+          <span>La PC no prende</span>
+        </label>
+
+        <label class="option">
+          <input type="radio" name="issue" value="no_internet" />
+          <span>No tiene internet</span>
+        </label>
+
+        <label class="option">
+          <input type="radio" name="issue" value="slow" />
+          <span>Esta lenta</span>
+        </label>
+
+        <label class="option">
+          <input type="radio" name="issue" value="bsod" />
+          <span>Pantalla azul</span>
+        </label>
+
+        <button type="submit">Mostrar Soluci&oacute;n</button>
+      </form>
+    </section>
+
+    <section id="result" class="card" aria-live="polite">
+      <h2 id="resultTitle"></h2>
+      <ol id="steps"></ol>
+      <p class="muted">Si la Soluci&oacute;n no funciona, contactame por correo o telefono.</p>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-copy">
+      <h2>Contactame ahora</h2>
+      <p>Si no lograste resolverlo, te ayudo directamente por WhatsApp o correo.</p>
+    </div>
+    <div class="footer-links">
+      <a href="https://wa.me/59892401809" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+        <img src="images/whatsapp-icon.webp" alt="WhatsApp" />
+        <span>Escribirme por WhatsApp</span>
+      </a>
+      <a href="mailto:castrogaspar56@gmail.com" aria-label="Enviar correo">
+        <img src="images/mail-icon.png" alt="Correo" />
+        <span>Enviar correo</span>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    const data = {
+      no_power: {
+        title: "Solucion: La PC no prende",
+        steps: [
+          "Verifica que el cable de energia este bien conectado a la fuente y al tomacorriente.",
+          "Prueba otro tomacorriente y, si aplica, revisa que la regleta este encendida.",
+          "Comprueba el switch trasero de la fuente (I/O) y dejalo en I.",
+          "Desconecta perifericos USB y vuelve a intentar encender.",
+          "Si no hay luces ni ventiladores, prueba otra fuente o deriva a servicio tecnico."
+        ]
+      },
+      no_internet: {
+        title: "Solucion: No tiene internet",
+        steps: [
+          "Confirma si otros dispositivos en la red tienen conexion.",
+          "Reinicia modem/router (apagar 30 segundos y encender).",
+          "En la PC, desactiva y activa el adaptador de red o reconecta Wi-Fi.",
+          "Ejecuta diagnostico de red y renueva IP (ipconfig /release y ipconfig /renew).",
+          "Si persiste, revisa DNS o contacta al proveedor de internet."
+        ]
+      },
+      slow: {
+        title: "Solucion: Esta lenta",
+        steps: [
+          "Abre el Administrador de tareas y revisa procesos con alto uso de CPU, RAM o disco.",
+          "Deshabilita programas de inicio innecesarios.",
+          "Libera espacio en disco y elimina temporales.",
+          "Ejecuta un analisis de malware/antivirus actualizado.",
+          "Verifica salud del disco y considera migrar a SSD si usa HDD."
+        ]
+      },
+      bsod: {
+        title: "Solucion: Pantalla azul",
+        steps: [
+          "Anota el codigo de error que aparece en la pantalla azul.",
+          "Desconecta hardware agregado recientemente y prueba de nuevo.",
+          "Inicia en Modo seguro y actualiza/reinstala drivers criticos.",
+          "Ejecuta sfc /scannow y chkdsk para validar sistema y disco.",
+          "Si los BSOD se repiten, revisa RAM/disco con herramientas de diagnostico."
+        ]
+      }
+    };
+
+    const form = document.getElementById("diagnosticForm");
+    const result = document.getElementById("result");
+    const resultTitle = document.getElementById("resultTitle");
+    const steps = document.getElementById("steps");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const selected = form.issue.value;
+      const info = data[selected];
+      if (!info) return;
+
+      resultTitle.textContent = info.title;
+      steps.innerHTML = "";
+
+      info.steps.forEach((step) => {
+        const li = document.createElement("li");
+        li.textContent = step;
+        steps.appendChild(li);
+      });
+
+      result.style.display = "block";
+      result.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  </script>
+</body>
+</html>
+
+
+
